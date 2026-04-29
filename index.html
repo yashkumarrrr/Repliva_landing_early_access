@@ -221,7 +221,59 @@ footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);let
 @keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 30px rgba(168,85,247,.3)}50%{box-shadow:0 0 80px rgba(168,85,247,.7)}}
 
-/* RESPONSIVE */
+/* ── PROGRESS BAR ── */
+.progress-bar{position:fixed;top:0;left:0;right:0;z-index:9999;height:3px;background:rgba(168,85,247,.15);pointer-events:none}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--violet),var(--pink));width:71%;position:relative;animation:pgPulse 3s ease-in-out infinite}
+@keyframes pgPulse{0%,100%{opacity:1}50%{opacity:.75}}
+.progress-text{position:absolute;right:6px;top:6px;font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:var(--violet);letter-spacing:.08em}
+
+/* ── TOAST ── */
+.toast-wrap{position:fixed;bottom:1.5rem;left:1.5rem;z-index:9000;display:flex;flex-direction:column;gap:.6rem;pointer-events:none}
+.toast{background:rgba(10,8,25,.96);border:1px solid rgba(168,85,247,.35);border-radius:16px;padding:.75rem 1rem;display:flex;align-items:center;gap:.75rem;font-size:.82rem;min-width:220px;max-width:280px;transform:translateX(-130%);transition:transform .45s cubic-bezier(.16,1,.3,1);pointer-events:all;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.toast.show{transform:translateX(0)}
+.toast-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;flex-shrink:0}
+.toast b{display:block;color:var(--white);font-weight:600}
+.toast small{color:var(--muted);font-size:.7rem}
+
+/* ── EXIT POPUP ── */
+.exit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:8000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.exit-overlay.show{opacity:1;pointer-events:all}
+.exit-modal{background:#0d0b1a;border:1px solid rgba(168,85,247,.4);border-radius:28px;padding:2.5rem;max-width:440px;width:90%;text-align:center;position:relative;box-shadow:0 0 80px rgba(123,47,190,.3),0 40px 100px rgba(0,0,0,.6);transform:scale(.88);transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.exit-overlay.show .exit-modal{transform:scale(1)}
+.exit-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:50%;width:30px;height:30px;color:var(--muted);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.exit-close:hover{color:var(--white);background:rgba(168,85,247,.2)}
+.exit-modal h3{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;margin-bottom:.5rem;background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.exit-offer{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);border-radius:12px;padding:.75rem 1rem;font-size:.85rem;color:#c4b5fd;margin:1rem 0 1.5rem}
+.exit-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(168,85,247,.25);border-radius:50px;padding:.9rem 1.25rem;color:var(--white);font-family:'Syne',sans-serif;font-size:.9rem;outline:none;margin-bottom:.75rem;transition:.3s;cursor:none}
+.exit-input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(168,85,247,.12)}
+.exit-btn{width:100%;padding:1rem;background:linear-gradient(135deg,var(--purple),var(--violet),var(--pink));border:none;border-radius:50px;color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;transition:.3s}
+.exit-btn:hover{opacity:.88;transform:translateY(-1px)}
+.exit-skip{font-size:.72rem;color:var(--muted);cursor:pointer;margin-top:.85rem;display:block;font-family:'DM Mono',monospace;transition:.2s;letter-spacing:.04em}
+.exit-skip:hover{color:var(--white)}
+
+/* ── COUNTDOWN ── */
+.countdown-row{display:flex;justify-content:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+.cd-block{text-align:center;background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.2);border-radius:16px;padding:1rem 1.4rem;min-width:80px}
+.cd-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1}
+.cd-label{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-top:.25rem}
+
+/* ── SCARCITY BAR ── */
+.scarcity-row{display:flex;align-items:center;justify-content:center;gap:.5rem;font-family:'DM Mono',monospace;font-size:.75rem;color:#f59e0b;margin-top:1.2rem}
+.scarcity-row strong{color:#fbbf24}
+
+/* ── RECENT SIGNUPS ── */
+.recent-row{display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap;margin-top:1.2rem}
+.rs-pill{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.04);border:1px solid rgba(168,85,247,.15);border-radius:50px;padding:.35rem .9rem;font-size:.72rem;color:var(--muted);animation:rsPulse 5s ease-in-out infinite}
+.rs-pill:nth-child(2){animation-delay:-1.8s}
+.rs-pill:nth-child(3){animation-delay:-3.5s}
+@keyframes rsPulse{0%,100%{opacity:.55}50%{opacity:1}}
+.rs-green{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pulse2 2s infinite;flex-shrink:0}
+@keyframes pulse2{0%,100%{transform:scale(1)}50%{transform:scale(1.7)}}
+
+/* ── NAV SCROLLED ── */
+nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom-color:rgba(168,85,247,.15)}
+
+/* ── RESPONSIVE ── */
 @media(max-width:900px){
   .demo-inner,.vs-grid{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
@@ -238,6 +290,30 @@ footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);let
 </style>
 </head>
 <body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar">
+  <div class="progress-fill">
+    <span class="progress-text">71% FULL</span>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- EXIT POPUP -->
+<div class="exit-overlay" id="exitOverlay">
+  <div class="exit-modal">
+    <button class="exit-close" onclick="closeExit()">✕</button>
+    <div style="font-size:2.5rem;margin-bottom:.75rem">🎁</div>
+    <h3>Wait — Don't Leave!</h3>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:0">You're one step away from your spot.</p>
+    <div class="exit-offer">🔥 First 500 members get <strong>3 months FREE</strong> + locked-in founding price forever</div>
+    <input type="email" class="exit-input" id="exitEmail" placeholder="your@email.com">
+    <button class="exit-btn" onclick="submitExit()">Claim My Free 3 Months 🚀</button>
+    <span class="exit-skip" onclick="closeExit()">No thanks, I'll pay full price later</span>
+  </div>
+</div>
 
 <!-- Custom Cursor -->
 <div id="cursor-dot"></div>
@@ -436,6 +512,14 @@ footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);let
     <h2 class="reveal"><span class="grd">Be First.</span><br>Get Free.</h2>
     <p class="reveal">Join the waitlist and get 3 months free when Replliva launches. First 500 signups only. We're building this for creators who are tired of paying $200/month to sound like a bot.</p>
 
+    <!-- COUNTDOWN -->
+    <div class="countdown-row reveal">
+      <div class="cd-block"><span class="cd-num" id="cdDays">00</span><span class="cd-label">Days</span></div>
+      <div class="cd-block"><span class="cd-num" id="cdHrs">00</span><span class="cd-label">Hours</span></div>
+      <div class="cd-block"><span class="cd-num" id="cdMins">00</span><span class="cd-label">Mins</span></div>
+      <div class="cd-block"><span class="cd-num" id="cdSecs">00</span><span class="cd-label">Secs</span></div>
+    </div>
+
     <div class="lead-form reveal">
       <div id="form-content">
         <div class="form-row">
@@ -445,7 +529,7 @@ footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);let
           </div>
           <div class="form-group">
             <label>Email Address</label>
-            <input type="email" id="f-email" placeholder="you@gmail.com" />
+            <input type="email" id="f-email" placeholder="repliva.info@gmail.com" />
           </div>
         </div>
         <div class="form-row">
@@ -495,6 +579,18 @@ footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);let
         <div class="av"></div><div class="av"></div><div class="av"></div>
       </div>
       <p class="sp-text"><strong>247 creators</strong> already on the waitlist</p>
+    </div>
+
+    <!-- SCARCITY -->
+    <div class="scarcity-row reveal">
+      ⚠ Only <strong id="spotsLeft">129</strong> early access spots remaining
+    </div>
+
+    <!-- RECENT SIGNUPS -->
+    <div class="recent-row reveal">
+      <div class="rs-pill"><span class="rs-green"></span>Priya from Mumbai joined 3 min ago</div>
+      <div class="rs-pill"><span class="rs-green"></span>Alex from NYC joined 7 min ago</div>
+      <div class="rs-pill"><span class="rs-green"></span>Rahul from Delhi joined 11 min ago</div>
     </div>
   </div>
 </section>
@@ -672,7 +768,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 // ── GOOGLE SHEETS ENDPOINT ────────────────────────────────────────
 // After deploying your Apps Script, paste your Web App URL below:
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycby9gCV_t4fatbjl8KnDO_-J_jjsWyw_s1XwptGesoV6iBRUB6drRb9CRedBrmpcCPAE/exec';
+const SHEET_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
 
 // ── FORM SUBMIT ───────────────────────────────────────────────────
 async function submitForm() {
@@ -777,6 +873,147 @@ document.querySelector('.phone-wrap') && document.querySelector('.phone-wrap').a
   const p = document.querySelector('.phone-3d');
   if (p) p.style.animation = 'phoneFloat 6s ease-in-out infinite';
 });
+
+// ── NAV SCROLL ────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── COUNTDOWN TIMER ───────────────────────────────────────────────
+function updateCountdown() {
+  const launch = new Date(Date.now() + 18 * 24 * 3600000); // 18 days from now
+  const launchFixed = new Date(localStorage.getItem('replliva_launch') || (() => {
+    const d = launch.toISOString();
+    localStorage.setItem('replliva_launch', d);
+    return d;
+  })());
+  const diff = launchFixed - Date.now();
+  if (diff > 0) {
+    const days = Math.floor(diff / 86400000);
+    const hrs  = Math.floor((diff % 86400000) / 3600000);
+    const mins = Math.floor((diff % 3600000) / 60000);
+    const secs = Math.floor((diff % 60000) / 1000);
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('cdDays').textContent = pad(days);
+    document.getElementById('cdHrs').textContent  = pad(hrs);
+    document.getElementById('cdMins').textContent = pad(mins);
+    document.getElementById('cdSecs').textContent = pad(secs);
+  }
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// ── SCARCITY COUNTER ──────────────────────────────────────────────
+let spots = parseInt(localStorage.getItem('replliva_spots') || '129');
+function tickSpots() {
+  if (Math.random() > 0.75 && spots > 8) {
+    spots--;
+    localStorage.setItem('replliva_spots', spots);
+    const el = document.getElementById('spotsLeft');
+    if (el) {
+      el.textContent = spots;
+      el.style.color = spots < 30 ? '#ef4444' : '#fbbf24';
+      el.style.transform = 'scale(1.3)';
+      setTimeout(() => el.style.transform = '', 300);
+    }
+  }
+}
+setInterval(tickSpots, 18000);
+document.getElementById('spotsLeft') && (document.getElementById('spotsLeft').textContent = spots);
+
+// ── WAITLIST COUNT ────────────────────────────────────────────────
+let wlCount = parseInt(localStorage.getItem('replliva_count') || '247');
+setInterval(() => {
+  if (Math.random() > 0.65) {
+    wlCount++;
+    localStorage.setItem('replliva_count', wlCount);
+    document.querySelectorAll('.sp-text').forEach(el => {
+      el.innerHTML = `<strong>${wlCount} creators</strong> already on the waitlist`;
+    });
+  }
+}, 9000);
+
+// ── TOAST NOTIFICATIONS ───────────────────────────────────────────
+const toasts = [
+  {flag:'🇮🇳', name:'Priya S.', city:'Mumbai'},
+  {flag:'🇺🇸', name:'Alex M.', city:'New York'},
+  {flag:'🇮🇳', name:'Rahul T.', city:'Bangalore'},
+  {flag:'🇬🇧', name:'Sarah K.', city:'London'},
+  {flag:'🇮🇳', name:'Yash P.', city:'Delhi'},
+  {flag:'🇦🇺', name:'Emma C.', city:'Sydney'},
+  {flag:'🇨🇦', name:'Jake W.', city:'Toronto'},
+  {flag:'🇮🇳', name:'Ananya R.', city:'Hyderabad'},
+  {flag:'🇩🇪', name:'Lukas B.', city:'Berlin'},
+  {flag:'🇮🇳', name:'Aarav K.', city:'Pune'},
+];
+let toastIdx = 0;
+function showToast(data) {
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `
+    <div class="toast-av">${data.flag}</div>
+    <div><b>${data.name} just joined!</b><small>${data.city} · just now</small></div>
+  `;
+  wrap.appendChild(t);
+  requestAnimationFrame(() => { requestAnimationFrame(() => t.classList.add('show')); });
+  setTimeout(() => {
+    t.classList.remove('show');
+    setTimeout(() => t.remove(), 500);
+  }, 4500);
+}
+// First toast after 3s, then every 10-15s
+setTimeout(() => showToast(toasts[toastIdx++ % toasts.length]), 3000);
+setInterval(() => showToast(toasts[toastIdx++ % toasts.length]), 12000);
+
+// ── EXIT INTENT POPUP ─────────────────────────────────────────────
+let exitShown = false;
+document.addEventListener('mouseleave', e => {
+  if (e.clientY < 5 && !exitShown && !localStorage.getItem('replliva_exit_seen')) {
+    exitShown = true;
+    document.getElementById('exitOverlay').classList.add('show');
+  }
+});
+// Also show on mobile: after 40s of no interaction
+let mobileExitTimer = setTimeout(() => {
+  if (!exitShown && !localStorage.getItem('replliva_exit_seen')) {
+    exitShown = true;
+    document.getElementById('exitOverlay').classList.add('show');
+  }
+}, 40000);
+
+function closeExit() {
+  document.getElementById('exitOverlay').classList.remove('show');
+  localStorage.setItem('replliva_exit_seen', '1');
+}
+document.getElementById('exitOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('exitOverlay')) closeExit();
+});
+
+function submitExit() {
+  const email = document.getElementById('exitEmail').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('exitEmail').style.borderColor = 'var(--pink)';
+    return;
+  }
+  // POST to Google Sheets
+  if (typeof SHEET_URL !== 'undefined' && SHEET_URL !== 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
+    fetch(SHEET_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name:'Exit Popup Lead', email, instagram:'—', followers:'—', pain:'—', source:'Exit Popup' })
+    });
+  }
+  closeExit();
+  // Show success toast
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<div class="toast-av">🎉</div><div><b>You're in!</b><small>Check your email soon</small></div>`;
+  wrap.appendChild(t);
+  requestAnimationFrame(() => { requestAnimationFrame(() => t.classList.add('show')); });
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 5000);
+}
 
 // ── LIVE SOCIAL PROOF COUNT ──────────────────────────────────────
 (function() {
