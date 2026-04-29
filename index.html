@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Replliva — AI That Replies Like You</title>
+<title>Repliva — AI That Replies Like You</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -23,7 +23,6 @@ html{scroll-behavior:smooth;cursor:none}
 body{background:var(--black);color:var(--white);font-family:'Syne',sans-serif;overflow-x:hidden}
 
 /* CUSTOM CURSOR */
-#cursor{position:fixed;pointer-events:none;z-index:9999;mix-blend-mode:difference}
 #cursor-dot{width:8px;height:8px;background:var(--cyan);border-radius:50%;position:fixed;transform:translate(-50%,-50%);transition:transform .1s;pointer-events:none;z-index:9999}
 #cursor-ring{width:40px;height:40px;border:1.5px solid var(--violet);border-radius:50%;position:fixed;transform:translate(-50%,-50%);transition:all .15s ease;pointer-events:none;z-index:9998}
 
@@ -42,7 +41,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem 3rem;display:
 /* SECTIONS */
 section{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center}
 
-/* ── HERO ── */
+/* HERO */
 #hero{flex-direction:column;text-align:center;padding:8rem 2rem 4rem;overflow:hidden}
 .hero-eyebrow{font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.25em;color:var(--cyan);text-transform:uppercase;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .3s forwards}
 .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,14vw,13rem);line-height:.9;letter-spacing:.02em;margin-bottom:1.5rem}
@@ -58,18 +57,14 @@ section{position:relative;z-index:2;min-height:100vh;display:flex;align-items:ce
 .btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 10px 60px rgba(168,85,247,.7)}
 .btn-ghost{background:transparent;color:var(--white);border:1px solid rgba(168,85,247,.4);padding:1.1rem 2.8rem;border-radius:3rem;font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;cursor:none;transition:all .4s}
 .btn-ghost:hover{border-color:var(--violet);background:rgba(168,85,247,.1)}
-
-/* floating badges */
 .hero-badges{display:flex;gap:.75rem;justify-content:center;margin-top:2.5rem;flex-wrap:wrap;opacity:0;animation:fadeUp .8s 1.5s forwards}
 .badge{background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:2rem;padding:.45rem 1.1rem;font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.08em}
 .badge span{color:var(--cyan)}
-
-/* SCROLL INDICATOR */
 .scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadeUp .8s 2s forwards}
 .scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--violet),transparent);animation:scrollPulse 2s infinite}
 .scroll-text{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
 
-/* ── 3D PHONE DEMO ── */
+/* DEMO */
 #demo{padding:4rem 2rem}
 .demo-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
 .demo-text .section-label{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase;margin-bottom:1rem}
@@ -78,8 +73,6 @@ section{position:relative;z-index:2;min-height:100vh;display:flex;align-items:ce
 .feature-list{display:flex;flex-direction:column;gap:.8rem}
 .feat-item{display:flex;align-items:center;gap:.75rem;font-size:.95rem;color:var(--white);opacity:.85}
 .feat-dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--cyan));flex-shrink:0}
-
-/* PHONE MOCKUP 3D */
 .phone-wrap{perspective:1200px;display:flex;justify-content:center}
 .phone-3d{transform:rotateY(-20deg) rotateX(5deg);transform-style:preserve-3d;transition:transform .6s ease;animation:phoneFloat 6s ease-in-out infinite}
 .phone-3d:hover{transform:rotateY(0deg) rotateX(0deg)}
@@ -94,14 +87,13 @@ section{position:relative;z-index:2;min-height:100vh;display:flex;align-items:ce
 .msg{max-width:80%;padding:.6rem .9rem;border-radius:18px;font-size:.72rem;line-height:1.5}
 .msg-in{background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.2);align-self:flex-start;color:var(--white)}
 .msg-out{background:linear-gradient(135deg,var(--purple),var(--violet));align-self:flex-end;color:#fff}
-.msg-time{font-size:.58rem;opacity:.5;margin-top:.2rem;text-align:right}
 .ai-badge-phone{background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.3);border-radius:1rem;padding:.25rem .7rem;font-family:'DM Mono',monospace;font-size:.58rem;color:var(--cyan);align-self:flex-end;margin-top:-.3rem}
 .typing-indicator{display:flex;gap:4px;align-items:center;padding:.5rem .9rem;background:rgba(168,85,247,.08);border-radius:18px;align-self:flex-start;width:60px}
 .typing-dot{width:5px;height:5px;background:var(--muted);border-radius:50%;animation:typingBounce 1.4s infinite}
 .typing-dot:nth-child(2){animation-delay:.2s}
 .typing-dot:nth-child(3){animation-delay:.4s}
 
-/* ── STATS ── */
+/* STATS */
 #stats{padding:4rem 2rem;min-height:auto}
 .stats-inner{max-width:1100px;margin:0 auto}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
@@ -112,7 +104,7 @@ section{position:relative;z-index:2;min-height:100vh;display:flex;align-items:ce
 .stat-num{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
 .stat-label{font-size:.85rem;color:var(--muted);margin-top:.5rem;line-height:1.5}
 
-/* ── HOW IT WORKS ── */
+/* HOW IT WORKS */
 #how{padding:6rem 2rem}
 .how-inner{max-width:1100px;margin:0 auto}
 .section-header{text-align:center;margin-bottom:5rem}
@@ -129,7 +121,7 @@ section{position:relative;z-index:2;min-height:100vh;display:flex;align-items:ce
 .step-card h3{font-size:1.1rem;font-weight:800;margin-bottom:.75rem}
 .step-card p{color:var(--muted);font-size:.9rem;line-height:1.7}
 
-/* ── COMPETITORS TEAR DOWN ── */
+/* VS SECTION */
 #vs{padding:6rem 2rem}
 .vs-inner{max-width:1100px;margin:0 auto}
 .vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:4rem}
@@ -145,21 +137,19 @@ section{position:relative;z-index:2;min-height:100vh;display:flex;align-items:ce
 .vi-check{color:var(--cyan);flex-shrink:0;font-size:1rem;margin-top:.05rem}
 .vi-text{color:var(--muted)}
 
-/* ── LEAD CAPTURE ── */
+/* WAITLIST */
 #waitlist{padding:6rem 2rem;min-height:80vh}
 .waitlist-inner{max-width:700px;margin:0 auto;text-align:center}
 .waitlist-inner .label{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:var(--pink);text-transform:uppercase;margin-bottom:1.5rem;display:block}
 .waitlist-inner h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,8vw,7rem);line-height:.95;margin-bottom:1.5rem}
 .waitlist-inner h2 .grd{background:linear-gradient(90deg,var(--pink),var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .waitlist-inner p{color:var(--muted);font-size:1rem;line-height:1.8;margin-bottom:3rem}
-
-/* FORM */
 .lead-form{background:rgba(13,11,26,.8);border:1px solid rgba(168,85,247,.25);border-radius:28px;padding:2.5rem;backdrop-filter:blur(20px);box-shadow:0 40px 120px rgba(123,47,190,.15);position:relative;overflow:hidden}
 .lead-form::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent 340deg,rgba(168,85,247,.06) 360deg);animation:formGlow 8s linear infinite;pointer-events:none}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
 .form-group{display:flex;flex-direction:column;gap:.5rem;text-align:left}
 .form-group label{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
-.form-group input, .form-group select{background:rgba(255,255,255,.04);border:1px solid rgba(168,85,247,.2);border-radius:12px;padding:.85rem 1.1rem;color:var(--white);font-family:'Syne',sans-serif;font-size:.9rem;outline:none;transition:all .3s;cursor:none;width:100%}
+.form-group input,.form-group select{background:rgba(255,255,255,.04);border:1px solid rgba(168,85,247,.2);border-radius:12px;padding:.85rem 1.1rem;color:var(--white);font-family:'Syne',sans-serif;font-size:.9rem;outline:none;transition:all .3s;cursor:none;width:100%}
 .form-group input::placeholder{color:var(--muted)}
 .form-group input:focus,.form-group select:focus{border-color:var(--violet);background:rgba(168,85,247,.06);box-shadow:0 0 0 3px rgba(168,85,247,.1)}
 .form-group select{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6B8A' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;cursor:none}
@@ -173,15 +163,11 @@ section{position:relative;z-index:2;min-height:100vh;display:flex;align-items:ce
 .submit-btn .btn-icon{position:relative;z-index:1;margin-left:.5rem}
 .form-footer{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);margin-top:1.2rem;text-align:center;letter-spacing:.05em}
 .form-footer a{color:var(--violet);text-decoration:none}
-
-/* SUCCESS STATE */
 .success-state{display:none;text-align:center;padding:2rem}
 .success-state .check-circle{width:72px;height:72px;background:linear-gradient(135deg,var(--purple),var(--cyan));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;animation:popIn .5s cubic-bezier(.34,1.56,.64,1)}
 .success-state h3{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;margin-bottom:.75rem}
 .success-state p{color:var(--muted);line-height:1.7}
 .confetti-emoji{font-size:2rem;animation:float2 3s ease-in-out infinite}
-
-/* SOCIAL PROOF */
 .social-proof{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:2rem;flex-wrap:wrap}
 .avatars{display:flex}
 .av{width:36px;height:36px;border-radius:50%;border:2px solid var(--black);margin-left:-8px;background:linear-gradient(135deg,var(--purple),var(--cyan))}
@@ -201,7 +187,7 @@ footer{position:relative;z-index:2;padding:3rem;text-align:center;border-top:1px
 .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:.15em;background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1rem}
 footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.08em}
 
-/* ── SCROLL REVEAL ── */
+/* REVEAL */
 .reveal{opacity:0;transform:translateY(50px);transition:all .8s cubic-bezier(.16,1,.3,1)}
 .reveal.revealed{opacity:1;transform:translateY(0)}
 .reveal-delay-1{transition-delay:.15s}
@@ -209,7 +195,7 @@ footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);let
 .reveal-delay-3{transition-delay:.45s}
 .reveal-delay-4{transition-delay:.6s}
 
-/* ── ANIMATIONS ── */
+/* ANIMATIONS */
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes wordUp{from{opacity:0;transform:translateY(110%)}to{opacity:1;transform:translateY(0)}}
 @keyframes scrollPulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.4;transform:scaleY(.8)}}
@@ -221,13 +207,13 @@ footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);let
 @keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 30px rgba(168,85,247,.3)}50%{box-shadow:0 0 80px rgba(168,85,247,.7)}}
 
-/* ── PROGRESS BAR ── */
+/* PROGRESS BAR */
 .progress-bar{position:fixed;top:0;left:0;right:0;z-index:9999;height:3px;background:rgba(168,85,247,.15);pointer-events:none}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--violet),var(--pink));width:71%;position:relative;animation:pgPulse 3s ease-in-out infinite}
 @keyframes pgPulse{0%,100%{opacity:1}50%{opacity:.75}}
 .progress-text{position:absolute;right:6px;top:6px;font-family:'DM Mono',monospace;font-size:9px;font-weight:700;color:var(--violet);letter-spacing:.08em}
 
-/* ── TOAST ── */
+/* TOAST */
 .toast-wrap{position:fixed;bottom:1.5rem;left:1.5rem;z-index:9000;display:flex;flex-direction:column;gap:.6rem;pointer-events:none}
 .toast{background:rgba(10,8,25,.96);border:1px solid rgba(168,85,247,.35);border-radius:16px;padding:.75rem 1rem;display:flex;align-items:center;gap:.75rem;font-size:.82rem;min-width:220px;max-width:280px;transform:translateX(-130%);transition:transform .45s cubic-bezier(.16,1,.3,1);pointer-events:all;box-shadow:0 8px 32px rgba(0,0,0,.5)}
 .toast.show{transform:translateX(0)}
@@ -235,7 +221,7 @@ footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);let
 .toast b{display:block;color:var(--white);font-weight:600}
 .toast small{color:var(--muted);font-size:.7rem}
 
-/* ── EXIT POPUP ── */
+/* EXIT POPUP */
 .exit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:8000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
 .exit-overlay.show{opacity:1;pointer-events:all}
 .exit-modal{background:#0d0b1a;border:1px solid rgba(168,85,247,.4);border-radius:28px;padding:2.5rem;max-width:440px;width:90%;text-align:center;position:relative;box-shadow:0 0 80px rgba(123,47,190,.3),0 40px 100px rgba(0,0,0,.6);transform:scale(.88);transition:transform .35s cubic-bezier(.16,1,.3,1)}
@@ -251,17 +237,17 @@ footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);let
 .exit-skip{font-size:.72rem;color:var(--muted);cursor:pointer;margin-top:.85rem;display:block;font-family:'DM Mono',monospace;transition:.2s;letter-spacing:.04em}
 .exit-skip:hover{color:var(--white)}
 
-/* ── COUNTDOWN ── */
+/* COUNTDOWN */
 .countdown-row{display:flex;justify-content:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
 .cd-block{text-align:center;background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.2);border-radius:16px;padding:1rem 1.4rem;min-width:80px}
 .cd-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1}
 .cd-label{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-top:.25rem}
 
-/* ── SCARCITY BAR ── */
+/* SCARCITY */
 .scarcity-row{display:flex;align-items:center;justify-content:center;gap:.5rem;font-family:'DM Mono',monospace;font-size:.75rem;color:#f59e0b;margin-top:1.2rem}
 .scarcity-row strong{color:#fbbf24}
 
-/* ── RECENT SIGNUPS ── */
+/* RECENT SIGNUPS */
 .recent-row{display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap;margin-top:1.2rem}
 .rs-pill{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.04);border:1px solid rgba(168,85,247,.15);border-radius:50px;padding:.35rem .9rem;font-size:.72rem;color:var(--muted);animation:rsPulse 5s ease-in-out infinite}
 .rs-pill:nth-child(2){animation-delay:-1.8s}
@@ -270,10 +256,8 @@ footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);let
 .rs-green{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pulse2 2s infinite;flex-shrink:0}
 @keyframes pulse2{0%,100%{transform:scale(1)}50%{transform:scale(1.7)}}
 
-/* ── NAV SCROLLED ── */
 nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom-color:rgba(168,85,247,.15)}
 
-/* ── RESPONSIVE ── */
 @media(max-width:900px){
   .demo-inner,.vs-grid{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
@@ -363,7 +347,6 @@ nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom
     <span class="ticker-item">₹499/mo Starter Plan</span>
     <span class="ticker-item">Beat ManyChat</span>
     <span class="ticker-item">Creator-First Tool</span>
-    <!-- duplicate for seamless loop -->
     <span class="ticker-item">Auto DM Replies</span>
     <span class="ticker-item">Comment to DM Automation</span>
     <span class="ticker-item">AI Voice Training</span>
@@ -381,7 +364,7 @@ nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom
     <div class="demo-text reveal">
       <div class="section-label">How Repliva Works</div>
       <h2>Your voice.<br>Their inbox.<br><span style="background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Instantly.</span></h2>
-      <p>Replliva trains on your content, captions and past DMs to build your unique AI persona. When someone comments "link" or slides into your DMs — Replliva replies exactly the way you would. No scripts. No keyword bots. Just you, automated.</p>
+      <p>Repliva trains on your content, captions and past DMs to build your unique AI persona. When someone comments "link" or slides into your DMs — Repliva replies exactly the way you would. No scripts. No keyword bots. Just you, automated.</p>
       <div class="feature-list">
         <div class="feat-item reveal reveal-delay-1"><div class="feat-dot"></div>AI trained on YOUR voice, tone & vocabulary</div>
         <div class="feat-item reveal reveal-delay-2"><div class="feat-dot"></div>Comment → DM automation in seconds</div>
@@ -403,13 +386,10 @@ nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom
             <div class="chat-area">
               <div class="msg msg-in">Hey! What's the link to your course? 🔥</div>
               <div class="msg msg-in" style="font-size:.65rem;opacity:.7">Just 2 seconds ago</div>
-
-              <div class="ai-badge-phone">⚡ Replliva replied instantly</div>
-              <div class="msg msg-out">Omg yes! 🙌 I've got you — here's the link: replliva.in/course — use code PRIYA20 for 20% off just for you 💜</div>
+              <div class="ai-badge-phone">⚡ Repliva replied instantly</div>
+              <div class="msg msg-out">Omg yes! 🙌 I've got you — here's the link: repliva.in/course — use code PRIYA20 for 20% off just for you 💜</div>
               <div class="msg msg-out" style="font-size:.65rem;opacity:.7;text-align:right">Just now · Delivered ✓✓</div>
-
               <div class="msg msg-in" style="margin-top:.5rem">YESSS thank you so much!! 🎉</div>
-
               <div class="typing-indicator">
                 <div class="typing-dot"></div>
                 <div class="typing-dot"></div>
@@ -430,7 +410,7 @@ nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom
       <div class="stat-card reveal"><div class="stat-num">360M</div><div class="stat-label">Indian Instagram users — zero AI DM tools built for them</div></div>
       <div class="stat-card reveal reveal-delay-1"><div class="stat-num">90%+</div><div class="stat-label">DM open rate vs 22% for email — your leads actually read this</div></div>
       <div class="stat-card reveal reveal-delay-2"><div class="stat-num">3-5×</div><div class="stat-label">More conversions from auto-DM vs manual reply strategies</div></div>
-      <div class="stat-card reveal reveal-delay-3"><div class="stat-num">24/7</div><div class="stat-label">Your Replliva AI never sleeps, never misses a comment</div></div>
+      <div class="stat-card reveal reveal-delay-3"><div class="stat-num">24/7</div><div class="stat-label">Your Repliva AI never sleeps, never misses a comment</div></div>
     </div>
   </div>
 </section>
@@ -447,7 +427,7 @@ nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom
         <div class="step-num">01</div>
         <div class="step-icon">🧠</div>
         <h3>Train Your AI Persona</h3>
-        <p>Connect your Instagram. Replliva reads your captions, past DMs, and bio to learn your exact tone — humor, emojis, vocabulary, everything.</p>
+        <p>Connect your Instagram. Repliva reads your captions, past DMs, and bio to learn your exact tone — humor, emojis, vocabulary, everything.</p>
       </div>
       <div class="step-card reveal reveal-delay-1">
         <div class="step-num">02</div>
@@ -489,7 +469,7 @@ nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom
       </div>
       <div class="vs-col us reveal reveal-delay-1" style="animation:pulseGlow 4s infinite">
         <div class="vs-head">
-          <div class="vs-logo" style="background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Replliva</div>
+          <div class="vs-logo" style="background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Repliva</div>
           <div class="vs-tag">Built Different</div>
         </div>
         <div class="vs-items">
@@ -510,9 +490,8 @@ nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom
   <div class="waitlist-inner">
     <span class="label reveal">🔥 Limited Early Access</span>
     <h2 class="reveal"><span class="grd">Be First.</span><br>Get Free.</h2>
-    <p class="reveal">Join the waitlist and get 3 months free when Replliva launches. First 500 signups only. We're building this for creators who are tired of paying $200/month to sound like a bot.</p>
+    <p class="reveal">Join the waitlist and get 3 months free when Repliva launches. First 500 signups only. We're building this for creators who are tired of paying $200/month to sound like a bot.</p>
 
-    <!-- COUNTDOWN -->
     <div class="countdown-row reveal">
       <div class="cd-block"><span class="cd-num" id="cdDays">00</span><span class="cd-label">Days</span></div>
       <div class="cd-block"><span class="cd-num" id="cdHrs">00</span><span class="cd-label">Hours</span></div>
@@ -565,7 +544,7 @@ nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom
       <div class="success-state" id="success-state">
         <div class="check-circle">✓</div>
         <h3>You're on the list!</h3>
-        <p>We'll notify you the moment Replliva goes live. <br>Your 3-month free access is locked in. 🎉</p>
+        <p>We'll notify you the moment Repliva goes live. <br>Your 3-month free access is locked in. 🎉</p>
         <div style="margin-top:1.5rem;font-size:1.5rem">
           <span class="confetti-emoji">🎊</span>
           <span class="confetti-emoji" style="animation-delay:.5s">✨</span>
@@ -581,12 +560,10 @@ nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom
       <p class="sp-text"><strong>247 creators</strong> already on the waitlist</p>
     </div>
 
-    <!-- SCARCITY -->
     <div class="scarcity-row reveal">
       ⚠ Only <strong id="spotsLeft">129</strong> early access spots remaining
     </div>
 
-    <!-- RECENT SIGNUPS -->
     <div class="recent-row reveal">
       <div class="rs-pill"><span class="rs-green"></span>Priya from Mumbai joined 3 min ago</div>
       <div class="rs-pill"><span class="rs-green"></span>Alex from NYC joined 7 min ago</div>
@@ -603,7 +580,11 @@ nav.scrolled{background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-bottom
 </footer>
 
 <script>
-// ── THREE.JS 3D PARTICLE BACKGROUND ──────────────────────────────
+// ── GOOGLE SHEETS ENDPOINT ────────────────────────────────────────
+// Paste your deployed Apps Script Web App URL here:
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycby9gCV_t4fatbjl8KnDO_-J_jjsWyw_s1XwptGesoV6iBRUB6drRb9CRedBrmpcCPAE/exec';
+
+// ── THREE.JS BACKGROUND ───────────────────────────────────────────
 const canvas = document.getElementById('bg-canvas');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -614,439 +595,324 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 30;
 
-// Particle system
 const particleCount = 1800;
 const positions = new Float32Array(particleCount * 3);
 const colors = new Float32Array(particleCount * 3);
 const sizes = new Float32Array(particleCount);
-
 const palette = [
   new THREE.Color(0x7B2FBE),
   new THREE.Color(0xA855F7),
   new THREE.Color(0x22D3EE),
   new THREE.Color(0xEC4899),
 ];
-
 for (let i = 0; i < particleCount; i++) {
   const radius = 20 + Math.random() * 40;
   const theta = Math.random() * Math.PI * 2;
   const phi = Math.acos(2 * Math.random() - 1);
-  positions[i*3] = radius * Math.sin(phi) * Math.cos(theta);
+  positions[i*3]   = radius * Math.sin(phi) * Math.cos(theta);
   positions[i*3+1] = radius * Math.sin(phi) * Math.sin(theta);
   positions[i*3+2] = radius * Math.cos(phi);
   const c = palette[Math.floor(Math.random() * palette.length)];
   colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
   sizes[i] = Math.random() * 3 + 0.5;
 }
-
 const geo = new THREE.BufferGeometry();
 geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-
-const mat = new THREE.PointsMaterial({
-  size: 0.15, vertexColors: true, transparent: true,
-  opacity: 0.7, sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false
-});
-
+geo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
+geo.setAttribute('size',     new THREE.BufferAttribute(sizes, 1));
+const mat = new THREE.PointsMaterial({ size:0.15, vertexColors:true, transparent:true, opacity:0.7, sizeAttenuation:true, blending:THREE.AdditiveBlending, depthWrite:false });
 const particles = new THREE.Points(geo, mat);
 scene.add(particles);
 
-// Floating 3D torus
-const torusGeo = new THREE.TorusGeometry(5, 1.2, 16, 60);
-const torusMat = new THREE.MeshBasicMaterial({
-  color: 0x7B2FBE, wireframe: true, transparent: true, opacity: 0.15
-});
-const torus = new THREE.Mesh(torusGeo, torusMat);
-torus.position.set(12, -5, -10);
-scene.add(torus);
+const torus = new THREE.Mesh(new THREE.TorusGeometry(5,1.2,16,60), new THREE.MeshBasicMaterial({color:0x7B2FBE,wireframe:true,transparent:true,opacity:0.15}));
+torus.position.set(12,-5,-10); scene.add(torus);
+const ico = new THREE.Mesh(new THREE.IcosahedronGeometry(3,1), new THREE.MeshBasicMaterial({color:0x22D3EE,wireframe:true,transparent:true,opacity:0.1}));
+ico.position.set(-15,8,-15); scene.add(ico);
+const torus2 = new THREE.Mesh(new THREE.TorusGeometry(3,0.6,8,40), new THREE.MeshBasicMaterial({color:0xEC4899,wireframe:true,transparent:true,opacity:0.12}));
+torus2.position.set(-10,-10,-8); scene.add(torus2);
 
-// Floating icosahedron
-const icoGeo = new THREE.IcosahedronGeometry(3, 1);
-const icoMat = new THREE.MeshBasicMaterial({
-  color: 0x22D3EE, wireframe: true, transparent: true, opacity: 0.1
-});
-const ico = new THREE.Mesh(icoGeo, icoMat);
-ico.position.set(-15, 8, -15);
-scene.add(ico);
-
-// Second torus for depth
-const torus2 = new THREE.Mesh(
-  new THREE.TorusGeometry(3, 0.6, 8, 40),
-  new THREE.MeshBasicMaterial({ color: 0xEC4899, wireframe: true, transparent: true, opacity: 0.12 })
-);
-torus2.position.set(-10, -10, -8);
-scene.add(torus2);
-
-// Mouse tracking
-let mx = 0, my = 0;
-document.addEventListener('mousemove', e => {
-  mx = (e.clientX / window.innerWidth - 0.5) * 2;
-  my = -(e.clientY / window.innerHeight - 0.5) * 2;
-});
-
-// Scroll tracking
-let scrollY = 0;
-window.addEventListener('scroll', () => { scrollY = window.scrollY; });
-
-// Clock
+let mx=0, my=0;
+document.addEventListener('mousemove', e => { mx=(e.clientX/window.innerWidth-.5)*2; my=-(e.clientY/window.innerHeight-.5)*2; });
+let scrollY=0;
+window.addEventListener('scroll', () => { scrollY=window.scrollY; });
 const clock = new THREE.Clock();
-
 function animate() {
   requestAnimationFrame(animate);
   const t = clock.getElapsedTime();
-
-  // Rotate particles
-  particles.rotation.y = t * 0.03 + mx * 0.05;
-  particles.rotation.x = t * 0.015 + my * 0.03;
-
-  // Animate objects
-  torus.rotation.x = t * 0.4;
-  torus.rotation.y = t * 0.3;
-  ico.rotation.x = t * 0.25;
-  ico.rotation.z = t * 0.35;
-  torus2.rotation.y = t * 0.5;
-  torus2.rotation.z = t * 0.2;
-
-  // Parallax with scroll
-  camera.position.y = -scrollY * 0.004;
-  camera.position.x = mx * 0.8;
-
+  particles.rotation.y = t*.03 + mx*.05;
+  particles.rotation.x = t*.015 + my*.03;
+  torus.rotation.x=t*.4; torus.rotation.y=t*.3;
+  ico.rotation.x=t*.25; ico.rotation.z=t*.35;
+  torus2.rotation.y=t*.5; torus2.rotation.z=t*.2;
+  camera.position.y=-scrollY*.004;
+  camera.position.x=mx*.8;
   renderer.render(scene, camera);
 }
 animate();
-
 window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = window.innerWidth/window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
 // ── CUSTOM CURSOR ─────────────────────────────────────────────────
-const dot = document.getElementById('cursor-dot');
+const dot  = document.getElementById('cursor-dot');
 const ring = document.getElementById('cursor-ring');
-let cx = 0, cy = 0, rx = 0, ry = 0;
-
+let cx=0, cy=0, rx=0, ry=0;
 document.addEventListener('mousemove', e => {
-  cx = e.clientX; cy = e.clientY;
-  dot.style.left = cx + 'px';
-  dot.style.top = cy + 'px';
+  cx=e.clientX; cy=e.clientY;
+  dot.style.left=cx+'px'; dot.style.top=cy+'px';
 });
-
 function animCursor() {
-  rx += (cx - rx) * 0.12;
-  ry += (cy - ry) * 0.12;
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
+  rx+=(cx-rx)*.12; ry+=(cy-ry)*.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
   requestAnimationFrame(animCursor);
 }
 animCursor();
-
-// Cursor hover effects
-document.querySelectorAll('button, a, input, select').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    ring.style.transform = 'translate(-50%,-50%) scale(1.8)';
-    ring.style.borderColor = 'var(--cyan)';
-    dot.style.transform = 'translate(-50%,-50%) scale(0)';
-  });
-  el.addEventListener('mouseleave', () => {
-    ring.style.transform = 'translate(-50%,-50%) scale(1)';
-    ring.style.borderColor = 'var(--violet)';
-    dot.style.transform = 'translate(-50%,-50%) scale(1)';
-  });
+document.querySelectorAll('button,a,input,select').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.transform='translate(-50%,-50%) scale(1.8)'; ring.style.borderColor='var(--cyan)'; dot.style.transform='translate(-50%,-50%) scale(0)'; });
+  el.addEventListener('mouseleave', () => { ring.style.transform='translate(-50%,-50%) scale(1)'; ring.style.borderColor='var(--violet)'; dot.style.transform='translate(-50%,-50%) scale(1)'; });
 });
 
 // ── SCROLL REVEAL ─────────────────────────────────────────────────
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('revealed');
-    }
-  });
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('revealed'); });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// ── GOOGLE SHEETS ENDPOINT ────────────────────────────────────────
-// After deploying your Apps Script, paste your Web App URL below:
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycby9gCV_t4fatbjl8KnDO_-J_jjsWyw_s1XwptGesoV6iBRUB6drRb9CRedBrmpcCPAE/exec';
-
-// ── FORM SUBMIT ───────────────────────────────────────────────────
+// ── FORM SUBMIT (FIXED) ───────────────────────────────────────────
 async function submitForm() {
-  const name     = document.getElementById('f-name').value.trim();
-  const email    = document.getElementById('f-email').value.trim();
-  const ig       = document.getElementById('f-ig').value.trim();
-  const followers= document.getElementById('f-size').value;
-  const pain     = document.getElementById('f-pain').value.trim();
+  const name      = document.getElementById('f-name').value.trim();
+  const email     = document.getElementById('f-email').value.trim();
+  const ig        = document.getElementById('f-ig').value.trim();
+  const followers = document.getElementById('f-size').value;
+  const pain      = document.getElementById('f-pain').value.trim();
 
-  // — Validation —
+  // Validation
   if (!name || !email) {
     ['f-name','f-email'].forEach(id => {
       const el = document.getElementById(id);
       if (!el.value.trim()) {
-        el.style.borderColor = 'var(--pink)';
-        el.style.boxShadow = '0 0 0 3px rgba(236,72,153,.15)';
-        el.placeholder = id === 'f-name' ? 'Name is required !' : 'Email is required !';
-        setTimeout(() => {
-          el.style.borderColor = '';
-          el.style.boxShadow = '';
-          el.placeholder = id === 'f-name' ? 'Arjun Sharma' : 'you@gmail.com';
-        }, 2500);
+        el.style.borderColor='var(--pink)';
+        el.style.boxShadow='0 0 0 3px rgba(236,72,153,.15)';
+        el.placeholder = id==='f-name' ? 'Name is required !' : 'Email is required !';
+        setTimeout(() => { el.style.borderColor=''; el.style.boxShadow=''; el.placeholder=id==='f-name'?'Arjun Sharma':'your@gmail.com'; }, 2500);
       }
     });
     return;
   }
-
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     const ei = document.getElementById('f-email');
-    ei.style.borderColor = 'var(--pink)';
-    ei.style.boxShadow = '0 0 0 3px rgba(236,72,153,.15)';
-    ei.placeholder = 'Enter a valid email !';
-    setTimeout(() => { ei.style.borderColor = ''; ei.style.boxShadow = ''; ei.placeholder = 'you@gmail.com'; }, 2500);
+    ei.style.borderColor='var(--pink)';
+    ei.style.boxShadow='0 0 0 3px rgba(236,72,153,.15)';
+    ei.placeholder='Enter a valid email !';
+    setTimeout(() => { ei.style.borderColor=''; ei.style.boxShadow=''; ei.placeholder='your@gmail.com'; }, 2500);
     return;
   }
 
-  // — Loading state —
+  // Loading state
   const btn = document.querySelector('.submit-btn');
-  btn.innerHTML = '<span>Locking you in... ✨</span>';
-  btn.disabled = true;
-  btn.style.opacity = '0.75';
+  btn.innerHTML='<span>Locking you in... ✨</span>';
+  btn.disabled=true;
+  btn.style.opacity='.75';
 
-  // — POST to Google Sheets —
+  // ✅ FIXED: Send as URLSearchParams (works with no-cors + Apps Script)
   try {
+    const formData = new URLSearchParams({
+      name,
+      email,
+      instagram: ig || '—',
+      followers:  followers || '—',
+      pain:       pain || '—',
+      source:     document.referrer || 'Direct'
+    });
     await fetch(SHEET_URL, {
       method: 'POST',
-      mode: 'no-cors', // required for Apps Script
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name, email,
-        instagram: ig || '—',
-        followers: followers || '—',
-        pain: pain || '—',
-        source: document.referrer || 'Direct'
-      })
+      mode:   'no-cors',
+      body:   formData
     });
-  } catch (err) {
-    // no-cors means we can't read the response — that's fine, it still works
+  } catch(err) {
     console.log('Submitted (no-cors mode)');
   }
 
-  // — Success state (always show after attempt) —
+  // Show success
   setTimeout(() => {
-    document.getElementById('form-content').style.display = 'none';
-    const ss = document.getElementById('success-state');
-    ss.style.display = 'block';
-    // Persist count in localStorage so page refreshes feel real
-    const prev = parseInt(localStorage.getItem('replliva_count') || '247');
+    document.getElementById('form-content').style.display='none';
+    document.getElementById('success-state').style.display='block';
+    const prev = parseInt(localStorage.getItem('repliva_count') || '247');
     const next = prev + 1;
-    localStorage.setItem('replliva_count', next);
-    const spText = document.querySelector('.sp-text');
-    if (spText) spText.innerHTML = `<strong>${next} creators</strong> already on the waitlist`;
+    localStorage.setItem('repliva_count', next);
+    document.querySelectorAll('.sp-text').forEach(el => { el.innerHTML=`<strong>${next} creators</strong> already on the waitlist`; });
   }, 1400);
 }
 
 // Enter key submit
 document.querySelectorAll('#form-content input').forEach(inp => {
-  inp.addEventListener('keydown', e => { if (e.key === 'Enter') submitForm(); });
+  inp.addEventListener('keydown', e => { if(e.key==='Enter') submitForm(); });
 });
 
-// ── PARALLAX on hero title ────────────────────────────────────────
+// ── PARALLAX ──────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
   const sy = window.scrollY;
-  const heroTitle = document.querySelector('.hero-title');
-  if (heroTitle) heroTitle.style.transform = `translateY(${sy * 0.25}px)`;
-  const heroSub = document.querySelector('.hero-sub');
-  if (heroSub) heroSub.style.transform = `translateY(${sy * 0.1}px)`;
+  const ht = document.querySelector('.hero-title');
+  if(ht) ht.style.transform=`translateY(${sy*.25}px)`;
+  const hs = document.querySelector('.hero-sub');
+  if(hs) hs.style.transform=`translateY(${sy*.1}px)`;
+  document.querySelector('nav').classList.toggle('scrolled', sy>60);
 });
 
-// ── PHONE 3D tilt on mouse ───────────────────────────────────────
-document.querySelector('.phone-wrap') && document.querySelector('.phone-wrap').addEventListener('mousemove', e => {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / rect.width - 0.5;
-  const y = (e.clientY - rect.top) / rect.height - 0.5;
-  const p = document.querySelector('.phone-3d');
-  if (p) {
-    p.style.transform = `rotateY(${x * 30}deg) rotateX(${-y * 20}deg)`;
-    p.style.animation = 'none';
-  }
-});
-document.querySelector('.phone-wrap') && document.querySelector('.phone-wrap').addEventListener('mouseleave', () => {
-  const p = document.querySelector('.phone-3d');
-  if (p) p.style.animation = 'phoneFloat 6s ease-in-out infinite';
-});
+// ── PHONE TILT ────────────────────────────────────────────────────
+const pw = document.querySelector('.phone-wrap');
+if(pw) {
+  pw.addEventListener('mousemove', e => {
+    const r=e.currentTarget.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    const p=document.querySelector('.phone-3d');
+    if(p){ p.style.transform=`rotateY(${x*30}deg) rotateX(${-y*20}deg)`; p.style.animation='none'; }
+  });
+  pw.addEventListener('mouseleave', () => {
+    const p=document.querySelector('.phone-3d');
+    if(p) p.style.animation='phoneFloat 6s ease-in-out infinite';
+  });
+}
 
-// ── NAV SCROLL ────────────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-  document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 60);
-});
-
-// ── COUNTDOWN TIMER ───────────────────────────────────────────────
+// ── COUNTDOWN ─────────────────────────────────────────────────────
 function updateCountdown() {
-  const launch = new Date(Date.now() + 18 * 24 * 3600000); // 18 days from now
-  const launchFixed = new Date(localStorage.getItem('replliva_launch') || (() => {
-    const d = launch.toISOString();
-    localStorage.setItem('replliva_launch', d);
-    return d;
-  })());
-  const diff = launchFixed - Date.now();
-  if (diff > 0) {
-    const days = Math.floor(diff / 86400000);
-    const hrs  = Math.floor((diff % 86400000) / 3600000);
-    const mins = Math.floor((diff % 3600000) / 60000);
-    const secs = Math.floor((diff % 60000) / 1000);
-    const pad = n => String(n).padStart(2,'0');
-    document.getElementById('cdDays').textContent = pad(days);
-    document.getElementById('cdHrs').textContent  = pad(hrs);
-    document.getElementById('cdMins').textContent = pad(mins);
-    document.getElementById('cdSecs').textContent = pad(secs);
+  const stored = localStorage.getItem('repliva_launch');
+  let launchDate;
+  if(stored) {
+    launchDate = new Date(stored);
+  } else {
+    launchDate = new Date(Date.now() + 18*24*3600000);
+    localStorage.setItem('repliva_launch', launchDate.toISOString());
+  }
+  const diff = launchDate - Date.now();
+  if(diff>0) {
+    const pad=n=>String(n).padStart(2,'0');
+    document.getElementById('cdDays').textContent=pad(Math.floor(diff/86400000));
+    document.getElementById('cdHrs').textContent=pad(Math.floor((diff%86400000)/3600000));
+    document.getElementById('cdMins').textContent=pad(Math.floor((diff%3600000)/60000));
+    document.getElementById('cdSecs').textContent=pad(Math.floor((diff%60000)/1000));
   }
 }
-setInterval(updateCountdown, 1000);
+setInterval(updateCountdown,1000);
 updateCountdown();
 
-// ── SCARCITY COUNTER ──────────────────────────────────────────────
-let spots = parseInt(localStorage.getItem('replliva_spots') || '129');
-function tickSpots() {
-  if (Math.random() > 0.75 && spots > 8) {
+// ── SCARCITY ──────────────────────────────────────────────────────
+let spots = parseInt(localStorage.getItem('repliva_spots') || '129');
+document.getElementById('spotsLeft').textContent=spots;
+setInterval(() => {
+  if(Math.random()>.75 && spots>8) {
     spots--;
-    localStorage.setItem('replliva_spots', spots);
-    const el = document.getElementById('spotsLeft');
-    if (el) {
-      el.textContent = spots;
-      el.style.color = spots < 30 ? '#ef4444' : '#fbbf24';
-      el.style.transform = 'scale(1.3)';
-      setTimeout(() => el.style.transform = '', 300);
-    }
+    localStorage.setItem('repliva_spots', spots);
+    const el=document.getElementById('spotsLeft');
+    if(el){ el.textContent=spots; el.style.color=spots<30?'#ef4444':'#fbbf24'; el.style.transform='scale(1.3)'; setTimeout(()=>el.style.transform='',300); }
   }
-}
-setInterval(tickSpots, 18000);
-document.getElementById('spotsLeft') && (document.getElementById('spotsLeft').textContent = spots);
+}, 18000);
 
 // ── WAITLIST COUNT ────────────────────────────────────────────────
-let wlCount = parseInt(localStorage.getItem('replliva_count') || '247');
+let wlCount = parseInt(localStorage.getItem('repliva_count') || '247');
+document.querySelectorAll('.sp-text').forEach(el=>{ el.innerHTML=`<strong>${wlCount} creators</strong> already on the waitlist`; });
 setInterval(() => {
-  if (Math.random() > 0.65) {
-    wlCount++;
-    localStorage.setItem('replliva_count', wlCount);
-    document.querySelectorAll('.sp-text').forEach(el => {
-      el.innerHTML = `<strong>${wlCount} creators</strong> already on the waitlist`;
-    });
-  }
+  if(Math.random()>.65){ wlCount++; localStorage.setItem('repliva_count',wlCount); document.querySelectorAll('.sp-text').forEach(el=>{ el.innerHTML=`<strong>${wlCount} creators</strong> already on the waitlist`; }); }
 }, 9000);
 
-// ── TOAST NOTIFICATIONS ───────────────────────────────────────────
-const toasts = [
-  {flag:'🇮🇳', name:'Priya S.', city:'Mumbai'},
-  {flag:'🇺🇸', name:'Alex M.', city:'New York'},
-  {flag:'🇮🇳', name:'Rahul T.', city:'Bangalore'},
-  {flag:'🇬🇧', name:'Sarah K.', city:'London'},
-  {flag:'🇮🇳', name:'Yash P.', city:'Delhi'},
-  {flag:'🇦🇺', name:'Emma C.', city:'Sydney'},
-  {flag:'🇨🇦', name:'Jake W.', city:'Toronto'},
-  {flag:'🇮🇳', name:'Ananya R.', city:'Hyderabad'},
-  {flag:'🇩🇪', name:'Lukas B.', city:'Berlin'},
-  {flag:'🇮🇳', name:'Aarav K.', city:'Pune'},
+// ── TOASTS ────────────────────────────────────────────────────────
+const toasts=[
+  {flag:'🇮🇳',name:'Priya S.',city:'Mumbai'},
+  {flag:'🇺🇸',name:'Alex M.',city:'New York'},
+  {flag:'🇮🇳',name:'Rahul T.',city:'Bangalore'},
+  {flag:'🇬🇧',name:'Sarah K.',city:'London'},
+  {flag:'🇮🇳',name:'Yash P.',city:'Delhi'},
+  {flag:'🇦🇺',name:'Emma C.',city:'Sydney'},
+  {flag:'🇨🇦',name:'Jake W.',city:'Toronto'},
+  {flag:'🇮🇳',name:'Ananya R.',city:'Hyderabad'},
+  {flag:'🇩🇪',name:'Lukas B.',city:'Berlin'},
+  {flag:'🇮🇳',name:'Aarav K.',city:'Pune'},
 ];
-let toastIdx = 0;
+let toastIdx=0;
 function showToast(data) {
-  const wrap = document.getElementById('toastWrap');
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.innerHTML = `
-    <div class="toast-av">${data.flag}</div>
-    <div><b>${data.name} just joined!</b><small>${data.city} · just now</small></div>
-  `;
+  const wrap=document.getElementById('toastWrap');
+  const t=document.createElement('div');
+  t.className='toast';
+  t.innerHTML=`<div class="toast-av">${data.flag}</div><div><b>${data.name} just joined!</b><small>${data.city} · just now</small></div>`;
   wrap.appendChild(t);
-  requestAnimationFrame(() => { requestAnimationFrame(() => t.classList.add('show')); });
-  setTimeout(() => {
-    t.classList.remove('show');
-    setTimeout(() => t.remove(), 500);
-  }, 4500);
+  requestAnimationFrame(()=>{ requestAnimationFrame(()=>t.classList.add('show')); });
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),500); },4500);
 }
-// First toast after 3s, then every 10-15s
-setTimeout(() => showToast(toasts[toastIdx++ % toasts.length]), 3000);
-setInterval(() => showToast(toasts[toastIdx++ % toasts.length]), 12000);
+setTimeout(()=>showToast(toasts[toastIdx++%toasts.length]),3000);
+setInterval(()=>showToast(toasts[toastIdx++%toasts.length]),12000);
 
-// ── EXIT INTENT POPUP ─────────────────────────────────────────────
-let exitShown = false;
+// ── EXIT INTENT ───────────────────────────────────────────────────
+let exitShown=false;
 document.addEventListener('mouseleave', e => {
-  if (e.clientY < 5 && !exitShown && !localStorage.getItem('replliva_exit_seen')) {
-    exitShown = true;
+  if(e.clientY<5 && !exitShown && !localStorage.getItem('repliva_exit_seen')) {
+    exitShown=true;
     document.getElementById('exitOverlay').classList.add('show');
   }
 });
-// Also show on mobile: after 40s of no interaction
-let mobileExitTimer = setTimeout(() => {
-  if (!exitShown && !localStorage.getItem('replliva_exit_seen')) {
-    exitShown = true;
+setTimeout(() => {
+  if(!exitShown && !localStorage.getItem('repliva_exit_seen')) {
+    exitShown=true;
     document.getElementById('exitOverlay').classList.add('show');
   }
 }, 40000);
 
 function closeExit() {
   document.getElementById('exitOverlay').classList.remove('show');
-  localStorage.setItem('replliva_exit_seen', '1');
+  localStorage.setItem('repliva_exit_seen','1');
 }
 document.getElementById('exitOverlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('exitOverlay')) closeExit();
+  if(e.target===document.getElementById('exitOverlay')) closeExit();
 });
 
+// ✅ FIXED: Exit popup also uses URLSearchParams
 function submitExit() {
-  const email = document.getElementById('exitEmail').value.trim();
-  if (!email || !email.includes('@')) {
-    document.getElementById('exitEmail').style.borderColor = 'var(--pink)';
+  const email=document.getElementById('exitEmail').value.trim();
+  if(!email || !email.includes('@')) {
+    document.getElementById('exitEmail').style.borderColor='var(--pink)';
     return;
   }
-  // POST to Google Sheets
-  if (typeof SHEET_URL !== 'undefined' && SHEET_URL !== 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
-    fetch(SHEET_URL, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ name:'Exit Popup Lead', email, instagram:'—', followers:'—', pain:'—', source:'Exit Popup' })
-    });
-  }
+  const formData = new URLSearchParams({
+    name:      'Exit Popup Lead',
+    email,
+    instagram: '—',
+    followers: '—',
+    pain:      '—',
+    source:    'Exit Popup'
+  });
+  fetch(SHEET_URL, { method:'POST', mode:'no-cors', body: formData });
   closeExit();
-  // Show success toast
-  const wrap = document.getElementById('toastWrap');
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.innerHTML = `<div class="toast-av">🎉</div><div><b>You're in!</b><small>Check your email soon</small></div>`;
+  const wrap=document.getElementById('toastWrap');
+  const t=document.createElement('div');
+  t.className='toast';
+  t.innerHTML=`<div class="toast-av">🎉</div><div><b>You're in!</b><small>Check your email soon</small></div>`;
   wrap.appendChild(t);
-  requestAnimationFrame(() => { requestAnimationFrame(() => t.classList.add('show')); });
-  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 5000);
+  requestAnimationFrame(()=>{ requestAnimationFrame(()=>t.classList.add('show')); });
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),500); },5000);
 }
 
-// ── LIVE SOCIAL PROOF COUNT ──────────────────────────────────────
-(function() {
-  const count = parseInt(localStorage.getItem('replliva_count') || '247');
-  const el = document.querySelector('.sp-text');
-  if (el) el.innerHTML = `<strong>${count} creators</strong> already on the waitlist`;
-})();
-
-// ── STAT COUNTER ANIMATION ───────────────────────────────────────
-const statObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting && !e.target.dataset.counted) {
-      e.target.dataset.counted = true;
-      animateCounter(e.target);
-    }
-  });
-}, { threshold: 0.5 });
-document.querySelectorAll('.stat-num').forEach(el => statObserver.observe(el));
+// ── STAT COUNTER ANIMATION ────────────────────────────────────────
+const statObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting && !e.target.dataset.counted){ e.target.dataset.counted=true; animateCounter(e.target); } });
+}, { threshold:0.5 });
+document.querySelectorAll('.stat-num').forEach(el=>statObs.observe(el));
 
 function animateCounter(el) {
-  const text = el.textContent;
-  const num = parseFloat(text.replace(/[^0-9.]/g, ''));
-  const suffix = text.replace(/[0-9.]/g, '');
-  if (isNaN(num)) return;
-  let start = 0;
-  const dur = 1800;
-  const step = timestamp => {
-    if (!start) start = timestamp;
-    const prog = Math.min((timestamp - start) / dur, 1);
-    const ease = 1 - Math.pow(1 - prog, 3);
-    const val = num <= 10 ? (ease * num).toFixed(1) : Math.floor(ease * num);
-    el.textContent = val + suffix;
-    if (prog < 1) requestAnimationFrame(step);
+  const text=el.textContent;
+  const num=parseFloat(text.replace(/[^0-9.]/g,''));
+  const suffix=text.replace(/[0-9.]/g,'');
+  if(isNaN(num)) return;
+  let start=0;
+  const dur=1800;
+  const step=timestamp => {
+    if(!start) start=timestamp;
+    const prog=Math.min((timestamp-start)/dur,1);
+    const ease=1-Math.pow(1-prog,3);
+    const val=num<=10?(ease*num).toFixed(1):Math.floor(ease*num);
+    el.textContent=val+suffix;
+    if(prog<1) requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
 }
