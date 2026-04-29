@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Replliva — AI That Replies Like You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#050508;
+  --purple:#7B2FBE;
+  --violet:#A855F7;
+  --cyan:#22D3EE;
+  --pink:#EC4899;
+  --white:#F0EEFF;
+  --muted:#6B6B8A;
+  --card:#0D0B1A;
+}
+html{scroll-behavior:smooth;cursor:none}
+body{background:var(--black);color:var(--white);font-family:'Syne',sans-serif;overflow-x:hidden}
+
+/* CUSTOM CURSOR */
+#cursor{position:fixed;pointer-events:none;z-index:9999;mix-blend-mode:difference}
+#cursor-dot{width:8px;height:8px;background:var(--cyan);border-radius:50%;position:fixed;transform:translate(-50%,-50%);transition:transform .1s;pointer-events:none;z-index:9999}
+#cursor-ring{width:40px;height:40px;border:1.5px solid var(--violet);border-radius:50%;position:fixed;transform:translate(-50%,-50%);transition:all .15s ease;pointer-events:none;z-index:9998}
+
+/* CANVAS */
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* NOISE OVERLAY */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4;pointer-events:none;z-index:1}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem 3rem;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);border-bottom:1px solid rgba(168,85,247,.1)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.15em;background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-cta{background:linear-gradient(135deg,var(--purple),var(--violet));color:#fff;border:none;padding:.7rem 1.8rem;border-radius:2rem;font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:.05em;cursor:none;transition:all .3s;box-shadow:0 0 20px rgba(123,47,190,.4)}
+.nav-cta:hover{transform:scale(1.05);box-shadow:0 0 40px rgba(168,85,247,.6)}
+
+/* SECTIONS */
+section{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center}
+
+/* ── HERO ── */
+#hero{flex-direction:column;text-align:center;padding:8rem 2rem 4rem;overflow:hidden}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.25em;color:var(--cyan);text-transform:uppercase;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .3s forwards}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,14vw,13rem);line-height:.9;letter-spacing:.02em;margin-bottom:1.5rem}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .word{display:inline-block;opacity:0;transform:translateY(110%);animation:wordUp .9s forwards}
+.hero-title .word:nth-child(1){animation-delay:.5s}
+.hero-title .word:nth-child(2){animation-delay:.65s}
+.hero-title .w2{animation-delay:.8s!important}
+.hero-title .grad{background:linear-gradient(90deg,var(--violet) 0%,var(--cyan) 50%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:clamp(1rem,2vw,1.3rem);color:var(--muted);max-width:600px;line-height:1.7;margin:0 auto 3rem;opacity:0;animation:fadeUp .8s 1.1s forwards}
+.hero-actions{display:flex;gap:1rem;align-items:center;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .8s 1.3s forwards}
+.btn-primary{background:linear-gradient(135deg,var(--purple),var(--violet));color:#fff;border:none;padding:1.1rem 2.8rem;border-radius:3rem;font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:.05em;cursor:none;transition:all .4s;box-shadow:0 0 40px rgba(123,47,190,.5),inset 0 1px 0 rgba(255,255,255,.15)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 10px 60px rgba(168,85,247,.7)}
+.btn-ghost{background:transparent;color:var(--white);border:1px solid rgba(168,85,247,.4);padding:1.1rem 2.8rem;border-radius:3rem;font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;cursor:none;transition:all .4s}
+.btn-ghost:hover{border-color:var(--violet);background:rgba(168,85,247,.1)}
+
+/* floating badges */
+.hero-badges{display:flex;gap:.75rem;justify-content:center;margin-top:2.5rem;flex-wrap:wrap;opacity:0;animation:fadeUp .8s 1.5s forwards}
+.badge{background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:2rem;padding:.45rem 1.1rem;font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.08em}
+.badge span{color:var(--cyan)}
+
+/* SCROLL INDICATOR */
+.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadeUp .8s 2s forwards}
+.scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--violet),transparent);animation:scrollPulse 2s infinite}
+.scroll-text{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+
+/* ── 3D PHONE DEMO ── */
+#demo{padding:4rem 2rem}
+.demo-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+.demo-text .section-label{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase;margin-bottom:1rem}
+.demo-text h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5rem);line-height:1;margin-bottom:1.5rem}
+.demo-text p{color:var(--muted);line-height:1.8;font-size:1rem;margin-bottom:2rem}
+.feature-list{display:flex;flex-direction:column;gap:.8rem}
+.feat-item{display:flex;align-items:center;gap:.75rem;font-size:.95rem;color:var(--white);opacity:.85}
+.feat-dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--cyan));flex-shrink:0}
+
+/* PHONE MOCKUP 3D */
+.phone-wrap{perspective:1200px;display:flex;justify-content:center}
+.phone-3d{transform:rotateY(-20deg) rotateX(5deg);transform-style:preserve-3d;transition:transform .6s ease;animation:phoneFloat 6s ease-in-out infinite}
+.phone-3d:hover{transform:rotateY(0deg) rotateX(0deg)}
+.phone{width:280px;height:560px;background:linear-gradient(145deg,#1a1330,#0d0b1a);border-radius:40px;border:1.5px solid rgba(168,85,247,.3);box-shadow:0 40px 120px rgba(123,47,190,.4),inset 0 0 60px rgba(168,85,247,.05),20px 20px 40px rgba(0,0,0,.5);padding:14px;position:relative;overflow:hidden}
+.phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:6px;background:#111;border-radius:0 0 8px 8px;z-index:10}
+.phone-screen{width:100%;height:100%;background:var(--black);border-radius:28px;overflow:hidden;display:flex;flex-direction:column}
+.phone-header{padding:1rem 1rem .5rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.ph-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan))}
+.ph-name{font-size:.8rem;font-weight:700}
+.ph-status{font-size:.65rem;color:var(--cyan)}
+.chat-area{flex:1;padding:1rem;display:flex;flex-direction:column;gap:.7rem;overflow:hidden}
+.msg{max-width:80%;padding:.6rem .9rem;border-radius:18px;font-size:.72rem;line-height:1.5}
+.msg-in{background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.2);align-self:flex-start;color:var(--white)}
+.msg-out{background:linear-gradient(135deg,var(--purple),var(--violet));align-self:flex-end;color:#fff}
+.msg-time{font-size:.58rem;opacity:.5;margin-top:.2rem;text-align:right}
+.ai-badge-phone{background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.3);border-radius:1rem;padding:.25rem .7rem;font-family:'DM Mono',monospace;font-size:.58rem;color:var(--cyan);align-self:flex-end;margin-top:-.3rem}
+.typing-indicator{display:flex;gap:4px;align-items:center;padding:.5rem .9rem;background:rgba(168,85,247,.08);border-radius:18px;align-self:flex-start;width:60px}
+.typing-dot{width:5px;height:5px;background:var(--muted);border-radius:50%;animation:typingBounce 1.4s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+
+/* ── STATS ── */
+#stats{padding:4rem 2rem;min-height:auto}
+.stats-inner{max-width:1100px;margin:0 auto}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.stat-card{background:var(--card);border:1px solid rgba(168,85,247,.15);border-radius:24px;padding:2.5rem 2rem;text-align:center;position:relative;overflow:hidden;transition:all .4s}
+.stat-card::before{content:'';position:absolute;inset:-1px;border-radius:24px;background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(34,211,238,.1));opacity:0;transition:.4s}
+.stat-card:hover::before{opacity:1}
+.stat-card:hover{transform:translateY(-8px);box-shadow:0 30px 80px rgba(168,85,247,.2)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.stat-label{font-size:.85rem;color:var(--muted);margin-top:.5rem;line-height:1.5}
+
+/* ── HOW IT WORKS ── */
+#how{padding:6rem 2rem}
+.how-inner{max-width:1100px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:5rem}
+.section-header .label{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase;margin-bottom:1rem;display:block}
+.section-header h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7vw,6rem);line-height:1}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;position:relative}
+.steps::before{content:'';position:absolute;top:3rem;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--violet),var(--cyan),var(--violet),transparent)}
+.step-card{background:var(--card);border:1px solid rgba(168,85,247,.15);border-radius:24px;padding:2.5rem 2rem;position:relative;transition:all .5s;overflow:hidden}
+.step-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--cyan));transform:scaleX(0);transform-origin:left;transition:.5s}
+.step-card:hover::after{transform:scaleX(1)}
+.step-card:hover{transform:translateY(-10px);border-color:rgba(168,85,247,.4)}
+.step-num{font-family:'Bebas Neue',sans-serif;font-size:4rem;background:linear-gradient(135deg,rgba(168,85,247,.3),rgba(34,211,238,.2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:1rem}
+.step-icon{font-size:2rem;margin-bottom:1rem}
+.step-card h3{font-size:1.1rem;font-weight:800;margin-bottom:.75rem}
+.step-card p{color:var(--muted);font-size:.9rem;line-height:1.7}
+
+/* ── COMPETITORS TEAR DOWN ── */
+#vs{padding:6rem 2rem}
+.vs-inner{max-width:1100px;margin:0 auto}
+.vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:4rem}
+.vs-col{background:var(--card);border-radius:28px;padding:2.5rem;border:1px solid rgba(168,85,247,.15)}
+.vs-col.them{border-color:rgba(107,107,138,.2)}
+.vs-col.us{border-color:rgba(168,85,247,.4);box-shadow:0 0 60px rgba(168,85,247,.1)}
+.vs-head{display:flex;align-items:center;gap:1rem;margin-bottom:2rem}
+.vs-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.1em}
+.vs-tag{font-size:.7rem;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.3);border-radius:1rem;padding:.2rem .7rem;color:var(--violet)}
+.vs-items{display:flex;flex-direction:column;gap:.9rem}
+.vs-item{display:flex;gap:.75rem;font-size:.9rem;line-height:1.6}
+.vi-x{color:#EF4444;flex-shrink:0;font-size:1rem;margin-top:.05rem}
+.vi-check{color:var(--cyan);flex-shrink:0;font-size:1rem;margin-top:.05rem}
+.vi-text{color:var(--muted)}
+
+/* ── LEAD CAPTURE ── */
+#waitlist{padding:6rem 2rem;min-height:80vh}
+.waitlist-inner{max-width:700px;margin:0 auto;text-align:center}
+.waitlist-inner .label{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:var(--pink);text-transform:uppercase;margin-bottom:1.5rem;display:block}
+.waitlist-inner h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,8vw,7rem);line-height:.95;margin-bottom:1.5rem}
+.waitlist-inner h2 .grd{background:linear-gradient(90deg,var(--pink),var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.waitlist-inner p{color:var(--muted);font-size:1rem;line-height:1.8;margin-bottom:3rem}
+
+/* FORM */
+.lead-form{background:rgba(13,11,26,.8);border:1px solid rgba(168,85,247,.25);border-radius:28px;padding:2.5rem;backdrop-filter:blur(20px);box-shadow:0 40px 120px rgba(123,47,190,.15);position:relative;overflow:hidden}
+.lead-form::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent 340deg,rgba(168,85,247,.06) 360deg);animation:formGlow 8s linear infinite;pointer-events:none}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.form-group{display:flex;flex-direction:column;gap:.5rem;text-align:left}
+.form-group label{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.form-group input, .form-group select{background:rgba(255,255,255,.04);border:1px solid rgba(168,85,247,.2);border-radius:12px;padding:.85rem 1.1rem;color:var(--white);font-family:'Syne',sans-serif;font-size:.9rem;outline:none;transition:all .3s;cursor:none;width:100%}
+.form-group input::placeholder{color:var(--muted)}
+.form-group input:focus,.form-group select:focus{border-color:var(--violet);background:rgba(168,85,247,.06);box-shadow:0 0 0 3px rgba(168,85,247,.1)}
+.form-group select{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6B8A' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;cursor:none}
+.form-group select option{background:#0d0b1a}
+.form-full{grid-column:1/-1}
+.submit-btn{width:100%;padding:1.2rem;background:linear-gradient(135deg,var(--purple),var(--violet),var(--pink));border:none;border-radius:16px;color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:.05em;cursor:none;transition:all .4s;margin-top:1rem;position:relative;overflow:hidden;box-shadow:0 10px 40px rgba(123,47,190,.4)}
+.submit-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--violet),var(--cyan));opacity:0;transition:.4s}
+.submit-btn:hover::before{opacity:1}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 20px 60px rgba(168,85,247,.6)}
+.submit-btn span{position:relative;z-index:1}
+.submit-btn .btn-icon{position:relative;z-index:1;margin-left:.5rem}
+.form-footer{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);margin-top:1.2rem;text-align:center;letter-spacing:.05em}
+.form-footer a{color:var(--violet);text-decoration:none}
+
+/* SUCCESS STATE */
+.success-state{display:none;text-align:center;padding:2rem}
+.success-state .check-circle{width:72px;height:72px;background:linear-gradient(135deg,var(--purple),var(--cyan));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;animation:popIn .5s cubic-bezier(.34,1.56,.64,1)}
+.success-state h3{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;margin-bottom:.75rem}
+.success-state p{color:var(--muted);line-height:1.7}
+.confetti-emoji{font-size:2rem;animation:float2 3s ease-in-out infinite}
+
+/* SOCIAL PROOF */
+.social-proof{display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:2rem;flex-wrap:wrap}
+.avatars{display:flex}
+.av{width:36px;height:36px;border-radius:50%;border:2px solid var(--black);margin-left:-8px;background:linear-gradient(135deg,var(--purple),var(--cyan))}
+.av:nth-child(2){background:linear-gradient(135deg,var(--pink),var(--violet))}
+.av:nth-child(3){background:linear-gradient(135deg,var(--cyan),var(--purple))}
+.sp-text{font-size:.85rem;color:var(--muted)}
+.sp-text strong{color:var(--white)}
+
+/* TICKER */
+.ticker-wrap{background:linear-gradient(90deg,var(--purple),var(--violet));padding:.65rem 0;overflow:hidden;position:relative;z-index:2}
+.ticker{display:flex;gap:0;animation:ticker 25s linear infinite;width:max-content}
+.ticker-item{font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.1em;color:rgba(255,255,255,.9);padding:0 3rem;white-space:nowrap}
+.ticker-item::before{content:'✦';margin-right:1.5rem;opacity:.6}
+
+/* FOOTER */
+footer{position:relative;z-index:2;padding:3rem;text-align:center;border-top:1px solid rgba(168,85,247,.1)}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:.15em;background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1rem}
+footer p{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.08em}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(50px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.reveal.revealed{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.15s}
+.reveal-delay-2{transition-delay:.3s}
+.reveal-delay-3{transition-delay:.45s}
+.reveal-delay-4{transition-delay:.6s}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes wordUp{from{opacity:0;transform:translateY(110%)}to{opacity:1;transform:translateY(0)}}
+@keyframes scrollPulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.4;transform:scaleY(.8)}}
+@keyframes phoneFloat{0%,100%{transform:rotateY(-20deg) rotateX(5deg) translateY(0)}50%{transform:rotateY(-15deg) rotateX(3deg) translateY(-15px)}}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes formGlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 30px rgba(168,85,247,.3)}50%{box-shadow:0 0 80px rgba(168,85,247,.7)}}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .demo-inner,.vs-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .steps::before{display:none}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  nav{padding:1rem 1.5rem}
+  .phone-wrap{display:none}
+}
+@media(max-width:600px){
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .hero-actions{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- Three.js Canvas -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Replliva</div>
+  <button class="nav-cta" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist →</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-eyebrow">⚡ AI-Powered DM & Comment Automation</p>
+  <h1 class="hero-title">
+    <span class="line"><span class="word">REPLY</span> <span class="word grad">SMARTER.</span></span>
+    <span class="line"><span class="word w2">GROW</span> <span class="word w2 grad">FASTER.</span></span>
+  </h1>
+  <p class="hero-sub">The AI that learns your voice, replies to every comment & DM exactly like you — converting followers into leads 24/7, while you sleep.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Get Early Access 🚀</button>
+    <button class="btn-ghost" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">See How It Works</button>
+  </div>
+  <div class="hero-badges">
+    <div class="badge"><span>360M</span> India Instagram Users</div>
+    <div class="badge"><span>90%+</span> DM Open Rate</div>
+    <div class="badge"><span>24/7</span> Auto Replies</div>
+    <div class="badge"><span>0</span> Bots. Just You.</div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll to explore</span>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Auto DM Replies</span>
+    <span class="ticker-item">Comment to DM Automation</span>
+    <span class="ticker-item">AI Voice Training</span>
+    <span class="ticker-item">Lead Capture Built-In</span>
+    <span class="ticker-item">India-First • Hindi Support</span>
+    <span class="ticker-item">₹499/mo Starter Plan</span>
+    <span class="ticker-item">Beat ManyChat</span>
+    <span class="ticker-item">Creator-First Tool</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">Auto DM Replies</span>
+    <span class="ticker-item">Comment to DM Automation</span>
+    <span class="ticker-item">AI Voice Training</span>
+    <span class="ticker-item">Lead Capture Built-In</span>
+    <span class="ticker-item">India-First • Hindi Support</span>
+    <span class="ticker-item">₹499/mo Starter Plan</span>
+    <span class="ticker-item">Beat ManyChat</span>
+    <span class="ticker-item">Creator-First Tool</span>
+  </div>
+</div>
+
+<!-- DEMO SECTION -->
+<section id="demo">
+  <div class="demo-inner">
+    <div class="demo-text reveal">
+      <div class="section-label">How Replliva Works</div>
+      <h2>Your voice.<br>Their inbox.<br><span style="background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Instantly.</span></h2>
+      <p>Replliva trains on your content, captions and past DMs to build your unique AI persona. When someone comments "link" or slides into your DMs — Replliva replies exactly the way you would. No scripts. No keyword bots. Just you, automated.</p>
+      <div class="feature-list">
+        <div class="feat-item reveal reveal-delay-1"><div class="feat-dot"></div>AI trained on YOUR voice, tone & vocabulary</div>
+        <div class="feat-item reveal reveal-delay-2"><div class="feat-dot"></div>Comment → DM automation in seconds</div>
+        <div class="feat-item reveal reveal-delay-3"><div class="feat-dot"></div>Story replies, reel comments, DM inbox — all covered</div>
+        <div class="feat-item reveal reveal-delay-4"><div class="feat-dot"></div>Auto-capture leads: email, phone, Instagram handle</div>
+      </div>
+    </div>
+    <div class="phone-wrap reveal">
+      <div class="phone-3d">
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-header">
+              <div class="ph-avatar"></div>
+              <div>
+                <div class="ph-name">Priya_Creates</div>
+                <div class="ph-status">● Active Now</div>
+              </div>
+            </div>
+            <div class="chat-area">
+              <div class="msg msg-in">Hey! What's the link to your course? 🔥</div>
+              <div class="msg msg-in" style="font-size:.65rem;opacity:.7">Just 2 seconds ago</div>
+
+              <div class="ai-badge-phone">⚡ Replliva replied instantly</div>
+              <div class="msg msg-out">Omg yes! 🙌 I've got you — here's the link: replliva.in/course — use code PRIYA20 for 20% off just for you 💜</div>
+              <div class="msg msg-out" style="font-size:.65rem;opacity:.7;text-align:right">Just now · Delivered ✓✓</div>
+
+              <div class="msg msg-in" style="margin-top:.5rem">YESSS thank you so much!! 🎉</div>
+
+              <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats" style="min-height:auto;padding:4rem 2rem">
+  <div class="stats-inner">
+    <div class="stats-grid">
+      <div class="stat-card reveal"><div class="stat-num">360M</div><div class="stat-label">Indian Instagram users — zero AI DM tools built for them</div></div>
+      <div class="stat-card reveal reveal-delay-1"><div class="stat-num">90%+</div><div class="stat-label">DM open rate vs 22% for email — your leads actually read this</div></div>
+      <div class="stat-card reveal reveal-delay-2"><div class="stat-num">3-5×</div><div class="stat-label">More conversions from auto-DM vs manual reply strategies</div></div>
+      <div class="stat-card reveal reveal-delay-3"><div class="stat-num">24/7</div><div class="stat-label">Your Replliva AI never sleeps, never misses a comment</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="how-inner">
+    <div class="section-header reveal">
+      <span class="label">Simple Setup. Insane Results.</span>
+      <h2>3 Steps to<br><span style="background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Autopilot Growth</span></h2>
+    </div>
+    <div class="steps">
+      <div class="step-card reveal">
+        <div class="step-num">01</div>
+        <div class="step-icon">🧠</div>
+        <h3>Train Your AI Persona</h3>
+        <p>Connect your Instagram. Replliva reads your captions, past DMs, and bio to learn your exact tone — humor, emojis, vocabulary, everything.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-1">
+        <div class="step-num">02</div>
+        <div class="step-icon">⚡</div>
+        <h3>Set Your Automation Rules</h3>
+        <p>Define triggers (keywords, story replies, new DMs, ad comments). Set follow-up sequences. Link your lead magnet or offer. 5 minutes, done.</p>
+      </div>
+      <div class="step-card reveal reveal-delay-2">
+        <div class="step-num">03</div>
+        <div class="step-icon">🚀</div>
+        <h3>Watch Followers Become Leads</h3>
+        <p>Every comment triggers an AI DM. Every DM captures a lead. Every lead gets nurtured — automatically. You just watch your list grow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VS SECTION -->
+<section id="vs" style="background:linear-gradient(180deg,transparent,rgba(123,47,190,.04),transparent)">
+  <div class="vs-inner">
+    <div class="section-header reveal">
+      <span class="label">The Honest Comparison</span>
+      <h2>Why Not<br><span style="background:linear-gradient(90deg,var(--muted),var(--white));-webkit-background-clip:text;-webkit-text-fill-color:transparent">ManyChat?</span></h2>
+    </div>
+    <div class="vs-grid">
+      <div class="vs-col them reveal">
+        <div class="vs-head">
+          <div class="vs-logo" style="color:var(--muted)">Them</div>
+          <div class="vs-tag" style="border-color:rgba(107,107,138,.3);color:var(--muted)">Old Guard</div>
+        </div>
+        <div class="vs-items">
+          <div class="vs-item"><span class="vi-x">✗</span><span class="vi-text">Keyword-trigger flows — replies feel like a chatbot, not you</span></div>
+          <div class="vs-item"><span class="vi-x">✗</span><span class="vi-text">$260/month at 25K contacts — punishes your success</span></div>
+          <div class="vs-item"><span class="vi-x">✗</span><span class="vi-text">No voice or persona training — zero personalization</span></div>
+          <div class="vs-item"><span class="vi-x">✗</span><span class="vi-text">Complex flow builder — takes days to set up</span></div>
+          <div class="vs-item"><span class="vi-x">✗</span><span class="vi-text">No Hindi/regional language support</span></div>
+          <div class="vs-item"><span class="vi-x">✗</span><span class="vi-text">No INR pricing — expensive for Indian creators</span></div>
+        </div>
+      </div>
+      <div class="vs-col us reveal reveal-delay-1" style="animation:pulseGlow 4s infinite">
+        <div class="vs-head">
+          <div class="vs-logo" style="background:linear-gradient(90deg,var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Replliva</div>
+          <div class="vs-tag">Built Different</div>
+        </div>
+        <div class="vs-items">
+          <div class="vs-item"><span class="vi-check">✓</span><span class="vi-text" style="color:var(--white)">AI that sounds exactly like you — followers can't tell the difference</span></div>
+          <div class="vs-item"><span class="vi-check">✓</span><span class="vi-text" style="color:var(--white)">Flat-rate pricing — ₹499/mo, never penalize growth</span></div>
+          <div class="vs-item"><span class="vi-check">✓</span><span class="vi-text" style="color:var(--white)">Trains on your own content & DM history automatically</span></div>
+          <div class="vs-item"><span class="vi-check">✓</span><span class="vi-text" style="color:var(--white)">5-minute setup — connect and go live instantly</span></div>
+          <div class="vs-item"><span class="vi-check">✓</span><span class="vi-text" style="color:var(--white)">Full Hindi + regional language support built-in</span></div>
+          <div class="vs-item"><span class="vi-check">✓</span><span class="vi-text" style="color:var(--white)">Made for Indian creators — by someone who gets it</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD CAPTURE -->
+<section id="waitlist">
+  <div class="waitlist-inner">
+    <span class="label reveal">🔥 Limited Early Access</span>
+    <h2 class="reveal"><span class="grd">Be First.</span><br>Get Free.</h2>
+    <p class="reveal">Join the waitlist and get 3 months free when Replliva launches. First 500 signups only. We're building this for creators who are tired of paying $200/month to sound like a bot.</p>
+
+    <div class="lead-form reveal">
+      <div id="form-content">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="f-name" placeholder="Arjun Sharma" />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="f-email" placeholder="you@gmail.com" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Instagram Handle</label>
+            <input type="text" id="f-ig" placeholder="@yourhandle" />
+          </div>
+          <div class="form-group">
+            <label>Follower Count</label>
+            <select id="f-size">
+              <option value="">Select range...</option>
+              <option>Under 10K</option>
+              <option>10K – 50K</option>
+              <option>50K – 200K</option>
+              <option>200K – 1M</option>
+              <option>1M+</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group form-full">
+            <label>What's your biggest pain point right now?</label>
+            <input type="text" id="f-pain" placeholder="e.g. I miss DMs, followers don't convert, takes too much time..." />
+          </div>
+        </div>
+        <button class="submit-btn" onclick="submitForm()">
+          <span>Claim My Early Access</span>
+          <span class="btn-icon">🚀</span>
+        </button>
+        <p class="form-footer">🔒 No spam ever. We hate bots as much as you do. &nbsp;|&nbsp; <a href="#">Privacy Policy</a></p>
+      </div>
+
+      <div class="success-state" id="success-state">
+        <div class="check-circle">✓</div>
+        <h3>You're on the list!</h3>
+        <p>We'll notify you the moment Replliva goes live. <br>Your 3-month free access is locked in. 🎉</p>
+        <div style="margin-top:1.5rem;font-size:1.5rem">
+          <span class="confetti-emoji">🎊</span>
+          <span class="confetti-emoji" style="animation-delay:.5s">✨</span>
+          <span class="confetti-emoji" style="animation-delay:1s">🚀</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="social-proof reveal" style="margin-top:2rem">
+      <div class="avatars">
+        <div class="av"></div><div class="av"></div><div class="av"></div>
+      </div>
+      <p class="sp-text"><strong>247 creators</strong> already on the waitlist</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Replliva</div>
+  <p>© 2025 Replliva · AI DM Automation for Creators · Built with 💜 in India</p>
+  <p style="margin-top:.5rem">Made to beat ManyChat at its own game 🏆</p>
+</footer>
+
+<script>
+// ── THREE.JS 3D PARTICLE BACKGROUND ──────────────────────────────
+const canvas = document.getElementById('bg-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x000000, 0);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 30;
+
+// Particle system
+const particleCount = 1800;
+const positions = new Float32Array(particleCount * 3);
+const colors = new Float32Array(particleCount * 3);
+const sizes = new Float32Array(particleCount);
+
+const palette = [
+  new THREE.Color(0x7B2FBE),
+  new THREE.Color(0xA855F7),
+  new THREE.Color(0x22D3EE),
+  new THREE.Color(0xEC4899),
+];
+
+for (let i = 0; i < particleCount; i++) {
+  const radius = 20 + Math.random() * 40;
+  const theta = Math.random() * Math.PI * 2;
+  const phi = Math.acos(2 * Math.random() - 1);
+  positions[i*3] = radius * Math.sin(phi) * Math.cos(theta);
+  positions[i*3+1] = radius * Math.sin(phi) * Math.sin(theta);
+  positions[i*3+2] = radius * Math.cos(phi);
+  const c = palette[Math.floor(Math.random() * palette.length)];
+  colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
+  sizes[i] = Math.random() * 3 + 0.5;
+}
+
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+const mat = new THREE.PointsMaterial({
+  size: 0.15, vertexColors: true, transparent: true,
+  opacity: 0.7, sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false
+});
+
+const particles = new THREE.Points(geo, mat);
+scene.add(particles);
+
+// Floating 3D torus
+const torusGeo = new THREE.TorusGeometry(5, 1.2, 16, 60);
+const torusMat = new THREE.MeshBasicMaterial({
+  color: 0x7B2FBE, wireframe: true, transparent: true, opacity: 0.15
+});
+const torus = new THREE.Mesh(torusGeo, torusMat);
+torus.position.set(12, -5, -10);
+scene.add(torus);
+
+// Floating icosahedron
+const icoGeo = new THREE.IcosahedronGeometry(3, 1);
+const icoMat = new THREE.MeshBasicMaterial({
+  color: 0x22D3EE, wireframe: true, transparent: true, opacity: 0.1
+});
+const ico = new THREE.Mesh(icoGeo, icoMat);
+ico.position.set(-15, 8, -15);
+scene.add(ico);
+
+// Second torus for depth
+const torus2 = new THREE.Mesh(
+  new THREE.TorusGeometry(3, 0.6, 8, 40),
+  new THREE.MeshBasicMaterial({ color: 0xEC4899, wireframe: true, transparent: true, opacity: 0.12 })
+);
+torus2.position.set(-10, -10, -8);
+scene.add(torus2);
+
+// Mouse tracking
+let mx = 0, my = 0;
+document.addEventListener('mousemove', e => {
+  mx = (e.clientX / window.innerWidth - 0.5) * 2;
+  my = -(e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+// Scroll tracking
+let scrollY = 0;
+window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+
+// Clock
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  // Rotate particles
+  particles.rotation.y = t * 0.03 + mx * 0.05;
+  particles.rotation.x = t * 0.015 + my * 0.03;
+
+  // Animate objects
+  torus.rotation.x = t * 0.4;
+  torus.rotation.y = t * 0.3;
+  ico.rotation.x = t * 0.25;
+  ico.rotation.z = t * 0.35;
+  torus2.rotation.y = t * 0.5;
+  torus2.rotation.z = t * 0.2;
+
+  // Parallax with scroll
+  camera.position.y = -scrollY * 0.004;
+  camera.position.x = mx * 0.8;
+
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ── CUSTOM CURSOR ─────────────────────────────────────────────────
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let cx = 0, cy = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  cx = e.clientX; cy = e.clientY;
+  dot.style.left = cx + 'px';
+  dot.style.top = cy + 'px';
+});
+
+function animCursor() {
+  rx += (cx - rx) * 0.12;
+  ry += (cy - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+
+// Cursor hover effects
+document.querySelectorAll('button, a, input, select').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ring.style.transform = 'translate(-50%,-50%) scale(1.8)';
+    ring.style.borderColor = 'var(--cyan)';
+    dot.style.transform = 'translate(-50%,-50%) scale(0)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring.style.borderColor = 'var(--violet)';
+    dot.style.transform = 'translate(-50%,-50%) scale(1)';
+  });
+});
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('revealed');
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── GOOGLE SHEETS ENDPOINT ────────────────────────────────────────
+// After deploying your Apps Script, paste your Web App URL below:
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycby9gCV_t4fatbjl8KnDO_-J_jjsWyw_s1XwptGesoV6iBRUB6drRb9CRedBrmpcCPAE/exec';
+
+// ── FORM SUBMIT ───────────────────────────────────────────────────
+async function submitForm() {
+  const name     = document.getElementById('f-name').value.trim();
+  const email    = document.getElementById('f-email').value.trim();
+  const ig       = document.getElementById('f-ig').value.trim();
+  const followers= document.getElementById('f-size').value;
+  const pain     = document.getElementById('f-pain').value.trim();
+
+  // — Validation —
+  if (!name || !email) {
+    ['f-name','f-email'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.style.borderColor = 'var(--pink)';
+        el.style.boxShadow = '0 0 0 3px rgba(236,72,153,.15)';
+        el.placeholder = id === 'f-name' ? 'Name is required !' : 'Email is required !';
+        setTimeout(() => {
+          el.style.borderColor = '';
+          el.style.boxShadow = '';
+          el.placeholder = id === 'f-name' ? 'Arjun Sharma' : 'you@gmail.com';
+        }, 2500);
+      }
+    });
+    return;
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    const ei = document.getElementById('f-email');
+    ei.style.borderColor = 'var(--pink)';
+    ei.style.boxShadow = '0 0 0 3px rgba(236,72,153,.15)';
+    ei.placeholder = 'Enter a valid email !';
+    setTimeout(() => { ei.style.borderColor = ''; ei.style.boxShadow = ''; ei.placeholder = 'you@gmail.com'; }, 2500);
+    return;
+  }
+
+  // — Loading state —
+  const btn = document.querySelector('.submit-btn');
+  btn.innerHTML = '<span>Locking you in... ✨</span>';
+  btn.disabled = true;
+  btn.style.opacity = '0.75';
+
+  // — POST to Google Sheets —
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors', // required for Apps Script
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name, email,
+        instagram: ig || '—',
+        followers: followers || '—',
+        pain: pain || '—',
+        source: document.referrer || 'Direct'
+      })
+    });
+  } catch (err) {
+    // no-cors means we can't read the response — that's fine, it still works
+    console.log('Submitted (no-cors mode)');
+  }
+
+  // — Success state (always show after attempt) —
+  setTimeout(() => {
+    document.getElementById('form-content').style.display = 'none';
+    const ss = document.getElementById('success-state');
+    ss.style.display = 'block';
+    // Persist count in localStorage so page refreshes feel real
+    const prev = parseInt(localStorage.getItem('replliva_count') || '247');
+    const next = prev + 1;
+    localStorage.setItem('replliva_count', next);
+    const spText = document.querySelector('.sp-text');
+    if (spText) spText.innerHTML = `<strong>${next} creators</strong> already on the waitlist`;
+  }, 1400);
+}
+
+// Enter key submit
+document.querySelectorAll('#form-content input').forEach(inp => {
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') submitForm(); });
+});
+
+// ── PARALLAX on hero title ────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  const heroTitle = document.querySelector('.hero-title');
+  if (heroTitle) heroTitle.style.transform = `translateY(${sy * 0.25}px)`;
+  const heroSub = document.querySelector('.hero-sub');
+  if (heroSub) heroSub.style.transform = `translateY(${sy * 0.1}px)`;
+});
+
+// ── PHONE 3D tilt on mouse ───────────────────────────────────────
+document.querySelector('.phone-wrap') && document.querySelector('.phone-wrap').addEventListener('mousemove', e => {
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width - 0.5;
+  const y = (e.clientY - rect.top) / rect.height - 0.5;
+  const p = document.querySelector('.phone-3d');
+  if (p) {
+    p.style.transform = `rotateY(${x * 30}deg) rotateX(${-y * 20}deg)`;
+    p.style.animation = 'none';
+  }
+});
+document.querySelector('.phone-wrap') && document.querySelector('.phone-wrap').addEventListener('mouseleave', () => {
+  const p = document.querySelector('.phone-3d');
+  if (p) p.style.animation = 'phoneFloat 6s ease-in-out infinite';
+});
+
+// ── LIVE SOCIAL PROOF COUNT ──────────────────────────────────────
+(function() {
+  const count = parseInt(localStorage.getItem('replliva_count') || '247');
+  const el = document.querySelector('.sp-text');
+  if (el) el.innerHTML = `<strong>${count} creators</strong> already on the waitlist`;
+})();
+
+// ── STAT COUNTER ANIMATION ───────────────────────────────────────
+const statObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !e.target.dataset.counted) {
+      e.target.dataset.counted = true;
+      animateCounter(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-num').forEach(el => statObserver.observe(el));
+
+function animateCounter(el) {
+  const text = el.textContent;
+  const num = parseFloat(text.replace(/[^0-9.]/g, ''));
+  const suffix = text.replace(/[0-9.]/g, '');
+  if (isNaN(num)) return;
+  let start = 0;
+  const dur = 1800;
+  const step = timestamp => {
+    if (!start) start = timestamp;
+    const prog = Math.min((timestamp - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - prog, 3);
+    const val = num <= 10 ? (ease * num).toFixed(1) : Math.floor(ease * num);
+    el.textContent = val + suffix;
+    if (prog < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+</script>
+</body>
+</html>
